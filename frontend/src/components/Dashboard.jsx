@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Package, ShoppingBag, Layers, AlertTriangle, TrendingUp, Table as TableIcon } from 'lucide-react'
+import { Package, ShoppingBag, BarChart3, AlertTriangle, TrendingUp, Table as TableIcon } from 'lucide-react'
 
 const Dashboard = ({ products = [], sales = [] }) => {
   const [categorySummary, setCategorySummary] = useState([])
@@ -22,8 +22,8 @@ const Dashboard = ({ products = [], sales = [] }) => {
 
   // Aggregate Stats
   const productGroups = {};
-  products.forEach(p => {
-    const key = `${p.category}-${p.subcategory}-${p.variant}`;
+  (products || []).forEach(p => {
+    const key = `${p.category || 'misc'}-${p.subcategory || 'misc'}-${p.variant || 'misc'}`;
     if (!productGroups[key]) {
       productGroups[key] = { ...p, totalQuantity: 0, totalWeight: 0 };
     }
@@ -40,7 +40,7 @@ const Dashboard = ({ products = [], sales = [] }) => {
 
   const cards = [
     { label: 'மொத்த இருப்பு எடை', sub: 'இருப்பு கிராம்', value: `${totalStockWeight.toFixed(2)}g`, icon: <Package />, color: 'var(--gold)' },
-    { label: 'மொத்த இருப்பு அளவு', sub: 'இருப்பில் உள்ளவை', value: `${totalStockQty} pcs`, icon: <Layers />, color: '#60A5FA' },
+    { label: 'மொத்த இருப்பு அளவு', sub: 'இருப்பில் உள்ளவை', value: `${totalStockQty} pcs`, icon: <Package />, color: '#60A5FA' },
     { label: 'மொத்த விற்பனை அளவு', sub: 'விற்கப்பட்ட எண்ணிக்கை', value: `${totalSalesCount} pcs`, icon: <ShoppingBag />, color: '#F59E0B' },
     { label: 'மொத்த வருவாய்', sub: "நிகர வருமானம்", value: `₹${totalIncome.toLocaleString('en-IN')}`, icon: <TrendingUp />, color: 'var(--success)' },
   ]

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { BarChart3, Package, Layers } from 'lucide-react'
+import { BarChart3, Package, ShoppingBag } from 'lucide-react'
 
 const LiveSummaryPanel = ({ refreshKey }) => {
   const [summary, setSummary] = useState([])

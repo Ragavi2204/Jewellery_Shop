@@ -196,6 +196,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   display: flex;
   flex-direction: column;
   min-width: 0;
+  width: 100%;
 }
 
 .container {
@@ -524,12 +525,19 @@ select option {
 }
 
 /* ======== TABLE ======== */
-.table-wrap { overflow-x: auto; }
+.table-wrap { 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  min-width: 600px;
 }
 
 th, td {
@@ -709,42 +717,64 @@ td { color: var(--text-main); }
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
-    left: -250px;
+    left: -260px;
     top: 0;
     width: 250px;
     height: 100%;
     background: var(--sidebar-bg);
-    transition: left 0.3s ease;
-    z-index: 1000;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2000;
   }
 
   .sidebar.active {
     left: 0;
   }
 
-  .app-content {
-    width: 100%;
-    margin-left: 0;
+  .main-scroll-area {
+    padding: 16px;
   }
-  
-  .card-container, .stats-grid, .form-grid, .form-row {
+
+  .container {
+    padding: 16px;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card-container, .stats-grid, .form-grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: 10px !important;
+    gap: 12px !important;
   }
   
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+  .table-wrap {
+    margin-left: -16px;
+    margin-right: -16px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
-  
+
   .mobile-menu-btn {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
+
   .flex-between {
-    flex-wrap: wrap;
-    gap: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 

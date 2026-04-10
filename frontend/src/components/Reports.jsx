@@ -163,7 +163,7 @@ const Reports = ({ products = [], soldItems = [], bills = [], role, deleteProduc
                 </tr>
               </thead>
               <tbody>
-                {soldItems.slice(-40).reverse().map((s, i) => (
+                {(soldItems || []).slice(-40).reverse().map((s, i) => (
                   <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '16px 20px' }}>
                       <div style={{ fontWeight: 800, fontSize: '14px' }}>{s.customerName || 'Walk-in'}</div>

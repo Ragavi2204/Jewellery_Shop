@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { MASTER_DATA } from '../data/masterData'
-import { ShoppingCart, User, CreditCard, Trash2, Eye, Layers } from 'lucide-react'
+import { ShoppingCart, User, CreditCard, Trash2, Eye, Package } from 'lucide-react'
 import BillModal from './BillModal'
 
 const CATEGORIES = Object.keys(MASTER_DATA)
@@ -183,7 +183,7 @@ const SellDashboard = ({ products = [], processSale }) => {
   if (!(products || []).length) {
     return (
       <div className="flex-center p-80 flex-column" style={{ color: 'var(--text-sub)', textAlign: 'center' }}>
-        <Layers size={64} style={{ opacity: 0.1, marginBottom: '16px' }} />
+        <Package size={64} style={{ opacity: 0.1, marginBottom: '16px' }} />
         <h2 style={{ color: 'var(--gold)', fontWeight: 800 }}>⚠️ No Stock Available</h2>
         <p>Please add stock before attempting a sale.</p>
       </div>
@@ -512,7 +512,7 @@ const SellDashboard = ({ products = [], processSale }) => {
                     {!(cart || []).length && (
                       <tr>
                         <td colSpan="6" style={{ textAlign: 'center', padding: '60px', color: 'var(--text-sub)' }}>
-                          <Layers size={40} style={{ opacity: 0.1, marginBottom: '10px' }} /><br />
+                          <Package size={40} style={{ opacity: 0.1, marginBottom: '10px' }} /><br />
                           பட்டியல் காலியாக உள்ளது
                         </td>
                       </tr>

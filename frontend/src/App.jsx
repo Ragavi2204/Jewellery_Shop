@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense, lazy } from 'react'
 import axios          from 'axios'
-import Login          from './components/Login'
-import Signup         from './components/Signup'
-import Sidebar        from './components/Sidebar'
-import Header         from './components/Header'
-import AddStock       from './components/AddStock'
-import SellDashboard  from './components/SellDashboard'
-import Reports        from './components/Reports'
-import Dashboard      from './components/Dashboard'
-import ForgotPassword from './components/ForgotPassword'
-import LiveSummaryPanel from './components/LiveSummaryPanel'
-import LiveInventory    from './components/LiveInventory'
+
+const Login          = lazy(() => import('./components/Login'))
+const Signup         = lazy(() => import('./components/Signup'))
+const Sidebar        = lazy(() => import('./components/Sidebar'))
+const Header         = lazy(() => import('./components/Header'))
+const AddStock       = lazy(() => import('./components/AddStock'))
+const SellDashboard  = lazy(() => import('./components/SellDashboard'))
+const Reports        = lazy(() => import('./components/Reports'))
+const Dashboard      = lazy(() => import('./components/Dashboard'))
+const ForgotPassword = lazy(() => import('./components/ForgotPassword'))
+const LiveSummaryPanel = lazy(() => import('./components/LiveSummaryPanel'))
+const LiveInventory    = lazy(() => import('./components/LiveInventory'))
 import { MASTER_DATA } from './data/masterData'
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
@@ -140,9 +141,17 @@ export default function App() {
   }
 
   if (!user) {
-    if (showSignup) return <Signup onBack={() => setShowSignup(false)} onSignupSuccess={() => setShowSignup(false)} />
-    if (showForgot) return <ForgotPassword onBack={() => setShowForgot(false)} />
-    return <Login onLogin={setUser} onShowSignup={() => setShowSignup(true)} onShowForgot={() => setShowForgot(true)} />
+    return (
+      <Suspense fallback={<div className="loading-screen">Loading Auth...</div>}>
+        {showSignup ? (
+          <Signup onBack={() => setShowSignup(false)} onSignupSuccess={() => setShowSignup(false)} />
+        ) : showForgot ? (
+          <ForgotPassword onBack={() => setShowForgot(false)} />
+        ) : (
+          <Login onLogin={setUser} onShowSignup={() => setShowSignup(true)} onShowForgot={() => setShowForgot(true)} />
+        )}
+      </Suspense>
+    )
   }
 
   const pages = {
@@ -160,16 +169,18 @@ export default function App() {
       <Sidebar activeTab={activeTab} setActiveTab={(t) => { setActiveTab(t); setSidebarOpen(false); }} role={user?.role || 'admin'} isOpen={sidebarOpen} closeSidebar={() => setSidebarOpen(false)} />
       {sidebarOpen && <div onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 999 }} />}
       <div className="app-content">
-        <Header username={user?.name || 'User'} theme={theme} toggleTheme={toggleTheme} onLogout={() => setUser(null)} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="main-scroll-area animate-fade-in" style={{ position: 'relative' }}>
-          {currentPage}
-          {undoData && (
-            <div className="toast-success shadow-lg" style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999, background: 'var(--card)', color: 'var(--text-main)', border: '1px solid var(--gold)', display: 'flex', gap: '15px', alignItems: 'center' }}>
-              <span style={{ fontWeight: 600 }}>Item deleted – Undo?</span>
-              <button className="btn btn-gold" onClick={handleUndo} style={{ height: '32px', padding: '0 14px', fontSize: '13px' }}>UNDO</button>
-            </div>
-          )}
-        </main>
+        <Suspense fallback={<div className="loading-screen">Loading...</div>}>
+          <Header username={user?.name || 'User'} theme={theme} toggleTheme={toggleTheme} onLogout={() => setUser(null)} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+          <main className="main-scroll-area animate-fade-in" style={{ position: 'relative' }}>
+            {currentPage || <div className="p-24">Page not found</div>}
+            {undoData && (
+              <div className="toast-success shadow-lg" style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999, background: 'var(--card)', color: 'var(--text-main)', border: '1px solid var(--gold)', display: 'flex', gap: '15px', alignItems: 'center' }}>
+                <span style={{ fontWeight: 600 }}>Item deleted – Undo?</span>
+                <button className="btn btn-gold" onClick={handleUndo} style={{ height: '32px', padding: '0 14px', fontSize: '13px' }}>UNDO</button>
+              </div>
+            )}
+          </main>
+        </Suspense>
       </div>
     </div>
   )

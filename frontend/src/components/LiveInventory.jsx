@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { BarChart3, Package, Layers, RefreshCw } from 'lucide-react'
+import { BarChart3, Package, ShoppingBag, RefreshCw } from 'lucide-react'
 
 const LiveInventory = ({ refreshKey }) => {
   const [summary, setSummary] = useState([])
@@ -113,7 +113,7 @@ const LiveInventory = ({ refreshKey }) => {
               {summary.filter(item => item.categoryName && ((item.totalQuantity || 0) > 0 || (item.totalWeight || 0) > 0)).length === 0 && !loading && (
                 <tr>
                   <td colSpan="3" style={{ textAlign: 'center', padding: '80px', color: 'var(--text-sub)' }}>
-                    <Layers size={48} style={{ opacity: 0.1, marginBottom: '16px' }} /><br />
+                    <Package size={48} style={{ opacity: 0.1, marginBottom: '16px' }} /><br />
                     இருப்பு தரவு எதுவும் இல்லை
                   </td>
                 </tr>
